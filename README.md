@@ -1,1 +1,3 @@
-# assaultcube_cheat
+# AssaultCube Cheat
+
+Game hacking stuff.

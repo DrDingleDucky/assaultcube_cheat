@@ -7,18 +7,18 @@
 
 DWORD getModuleBaseAddress(const wchar_t* lpszModuleName, DWORD processID) {
     DWORD moduleBaseAddress = 0;
-    HANDLE snapshot = CreateToolhelp32Snapshot(TH32CS_SNAPMODULE, processID); // make snapshot of all modules within process
+    HANDLE snapshot = CreateToolhelp32Snapshot(TH32CS_SNAPMODULE, processID);
     MODULEENTRY32 moduleEntry32 = { 0 };
     moduleEntry32.dwSize = sizeof(MODULEENTRY32);
-    if (Module32First(snapshot, &moduleEntry32)) // store first module in moduleEntry32
+    if (Module32First(snapshot, &moduleEntry32))
     {
         do {
-            if (_tcscmp(moduleEntry32.szModule, lpszModuleName) == 0) // if found fodule matches fodule we look for -> done!
+            if (_tcscmp(moduleEntry32.szModule, lpszModuleName) == 0)
             {
                 moduleBaseAddress = (DWORD)moduleEntry32.modBaseAddr;
                 break;
             }
-        } while (Module32Next(snapshot, &moduleEntry32)); // go through Module entries in snapshot and store in moduleEntry32
+        } while (Module32Next(snapshot, &moduleEntry32));
     }
     CloseHandle(snapshot);
     return moduleBaseAddress;
@@ -26,7 +26,7 @@ DWORD getModuleBaseAddress(const wchar_t* lpszModuleName, DWORD processID) {
 
 DWORD getPointerAddress(HWND windowHandle, DWORD gameBaseAddress, DWORD address, std::vector<DWORD> offsets)
 {
-    DWORD processID = NULL; // game process ID
+    DWORD processID = NULL;
     GetWindowThreadProcessId(windowHandle, &processID);
     HANDLE processHandle = OpenProcess(PROCESS_ALL_ACCESS, FALSE, processID);
     if (processHandle == NULL)
@@ -37,12 +37,12 @@ DWORD getPointerAddress(HWND windowHandle, DWORD gameBaseAddress, DWORD address,
 
     DWORD offset_null = NULL;
     ReadProcessMemory(processHandle, (LPVOID*)(gameBaseAddress + address), &offset_null, sizeof(offset_null), 0);
-    DWORD pointeraddress = offset_null; // the address we need
-    for (int i = 0; i < offsets.size() - 1; i++) // we dont want to change the last offset value so we do -1
+    DWORD pointeraddress = offset_null;
+    for (int i = 0; i < offsets.size() - 1; i++)
     {
         ReadProcessMemory(processHandle, (LPVOID*)(pointeraddress + offsets.at(i)), &pointeraddress, sizeof(pointeraddress), 0);
     }
-    return pointeraddress += offsets.at(offsets.size() - 1); // adding the last offset
+    return pointeraddress += offsets.at(offsets.size() - 1);
 }
 
 int main()

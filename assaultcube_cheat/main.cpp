@@ -15,6 +15,7 @@ DWORD GetModuleBaseAddress(const wchar_t* lpszModuleName, DWORD processID) {
 		std::cout << "error: invalid handle value\n";
 		return EXIT_FAILURE;
 	}
+
 	MODULEENTRY32 moduleEntry32 = { 0 };
 	// if you do not initialize dwSize, Module32First fails
 	moduleEntry32.dwSize = sizeof(MODULEENTRY32);
@@ -59,12 +60,13 @@ DWORD GetPointerAddress(HWND windowHandle, DWORD baseAddress, DWORD address, std
 	{
 		ReadProcessMemory(processHandle, (LPVOID*)(pointerAddress + offsets.at(i)), &pointerAddress, sizeof(pointerAddress), 0);
 	}
+
 	return pointerAddress += offsets.at(offsets.size() - 1);
 }
 
 int main()
 {	// retrieves a handle to the top-level window
-	HWND windowHandle = FindWindowA(NULL, ("AssaultCube"));
+    HWND windowHandle = FindWindowA(NULL, ("AssaultCube"));
 	if (windowHandle == NULL)
 	{
 		std::cout << "error: windowHandle returned NULL\n";

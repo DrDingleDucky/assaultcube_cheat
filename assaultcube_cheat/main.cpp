@@ -89,7 +89,7 @@ int main()
 
 	uintptr_t baseAddress = GetModuleBaseAddress(L"ac_client.exe", processID);
 
-	// base ammo address (should do dynamically)
+	// ammo address (should do dynamically i think)
 	DWORD ammoAddress = 0x0017E0A8;
 
 	// pointer offsets
@@ -101,6 +101,7 @@ int main()
 	while (true)
 	{
 		int ammo = 20;
+		// writes data to an area of memory in a specified process
 		WriteProcessMemory(processHandle, (LPVOID*)(ammoPointerAddress), &ammo, 4, 0);
 	}
 	return EXIT_SUCCESS;

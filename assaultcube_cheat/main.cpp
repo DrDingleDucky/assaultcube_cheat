@@ -16,7 +16,7 @@ DWORD GetModuleBaseAddress(const wchar_t* lpszModuleName, DWORD processID) {
 		return EXIT_FAILURE;
 	}
 
-	MODULEENTRY32 moduleEntry32 = { 0 };
+    MODULEENTRY32 moduleEntry32 = { 0 };
 	// if you do not initialize dwSize, Module32First fails
 	moduleEntry32.dwSize = sizeof(MODULEENTRY32);
 	// retrieves and stores information about the first module associated with the process

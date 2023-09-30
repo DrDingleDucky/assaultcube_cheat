@@ -66,7 +66,7 @@ DWORD GetPointerAddress(HWND windowHandle, DWORD baseAddress, DWORD address, std
 
 int main()
 {	// retrieves a handle to the top-level window
-    HWND windowHandle = FindWindowA(NULL, ("AssaultCube"));
+	HWND windowHandle = FindWindowA(NULL, ("AssaultCube"));
 	if (windowHandle == NULL)
 	{
 		std::cout << "error: windowHandle returned NULL\n";

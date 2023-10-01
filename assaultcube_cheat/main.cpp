@@ -36,22 +36,8 @@ DWORD GetModuleBaseAddress(const wchar_t* lpszModuleName, DWORD processID) {
     return moduleBaseAddress;
 }
 
-DWORD GetPointerAddress(HWND windowHandle, DWORD baseAddress, DWORD address, std::vector<DWORD> offsets)
+DWORD GetPointerAddress(HANDLE processHandle, DWORD baseAddress, DWORD address, std::vector<DWORD> offsets)
 {
-    DWORD processID = NULL;
-    GetWindowThreadProcessId(windowHandle, &processID);
-    if (processID == 0)
-    {
-        std::cout << "processID return 0\n";
-    }
-
-    HANDLE processHandle = OpenProcess(PROCESS_ALL_ACCESS, FALSE, processID);
-    if (processHandle == NULL)
-    {
-        std::cout << "error: processHandle returned NULL\n";
-        return EXIT_FAILURE;
-    }
-
     DWORD pointerAddress = NULL;
     // copies the data in the specified address range from the address space of the specified process
     ReadProcessMemory(processHandle, (LPVOID*)(baseAddress + address), &pointerAddress, sizeof(pointerAddress), 0);
@@ -82,6 +68,8 @@ int main()
         std::cout << "processID return 0\n";
     }
 
+    uintptr_t baseAddress = GetModuleBaseAddress(L"ac_client.exe", processID);
+
     // opens an existing local process object
     HANDLE processHandle = OpenProcess(PROCESS_ALL_ACCESS, FALSE, processID);
     if (processHandle == NULL)
@@ -90,16 +78,14 @@ int main()
         return EXIT_FAILURE;
     }
 
-    uintptr_t baseAddress = GetModuleBaseAddress(L"ac_client.exe", processID);
-
-    // ammo address (should do dynamically i think)
+    // ammo address
     DWORD ammoAddress = 0x0017E0A8;
 
     // pointer offsets
     std::vector<DWORD> ammoOffsets{ 0x140 };
 
     // adds offsets to base addresss
-    DWORD ammoPointerAddress = GetPointerAddress(windowHandle, baseAddress, ammoAddress, ammoOffsets);
+    DWORD ammoPointerAddress = GetPointerAddress(processHandle, baseAddress, ammoAddress, ammoOffsets);
 
     while (true)
     {

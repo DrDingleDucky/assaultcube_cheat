@@ -81,27 +81,32 @@ int main()
 
     // base address
     DWORD assaultRifleAmmoAddress = 0x0017E0A8;
+    DWORD submachineAmmoAddress = 0x0017E0A8;
     DWORD pistleAmmoAddress = 0x0017E0A8;
     DWORD healthAddress = 0x0017E0A8;
 
     // pointer offsets
     std::vector<DWORD> assaultRifleAmmoOffsets{ 0x140 };
+    std::vector<DWORD> submachineAmmoOffsets{ 0x138 };
     std::vector<DWORD> pistleAmmoOffsets{ 0x12C };
     std::vector<DWORD> healthOffsets{ 0xEC };
 
     // adds offsets to base addresss
     DWORD assaultRifleAmmoPointerAddress = GetPointerAddress(processHandle, baseAddress, assaultRifleAmmoAddress, assaultRifleAmmoOffsets);
+    DWORD submachineAmmoPointerAddress = GetPointerAddress(processHandle, baseAddress, submachineAmmoAddress, submachineAmmoOffsets);
     DWORD pistleAmmoPointerAddress = GetPointerAddress(processHandle, baseAddress, pistleAmmoAddress, pistleAmmoOffsets);
     DWORD healthPointerAddress = GetPointerAddress(processHandle, baseAddress, healthAddress, healthOffsets);
 
     while (true)
     {
         int assaultRifleAmmo = 20;
+        int submachineAmmo = 30;
         int pistleAmmo = 10;
         int health = 100;
 
         // writes data to an area of memory in a specified process
         WriteProcessMemory(processHandle, (LPVOID*)(assaultRifleAmmoPointerAddress), &assaultRifleAmmo, 4, 0);
+        WriteProcessMemory(processHandle, (LPVOID*)(submachineAmmoPointerAddress), &submachineAmmo, 4, 0);
         WriteProcessMemory(processHandle, (LPVOID*)(pistleAmmoPointerAddress), &pistleAmmo, 4, 0);
         WriteProcessMemory(processHandle, (LPVOID*)(healthPointerAddress), &health, 4, 0);
     }

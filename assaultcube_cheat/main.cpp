@@ -68,7 +68,6 @@ int main()
         std::cout << "processID return 0\n";
     }
 
-    uintptr_t baseAddress = GetModuleBaseAddress(L"ac_client.exe", processID);
 
     // opens an existing local process object
     HANDLE processHandle = OpenProcess(PROCESS_ALL_ACCESS, FALSE, processID);
@@ -78,20 +77,33 @@ int main()
         return EXIT_FAILURE;
     }
 
-    // ammo address
-    DWORD ammoAddress = 0x0017E0A8;
+    uintptr_t baseAddress = GetModuleBaseAddress(L"ac_client.exe", processID);
+
+    // base address
+    DWORD assaultRifleAmmoAddress = 0x0017E0A8;
+    DWORD pistleAmmoAddress = 0x0017E0A8;
+    DWORD healthAddress = 0x0017E0A8;
 
     // pointer offsets
-    std::vector<DWORD> ammoOffsets{ 0x140 };
+    std::vector<DWORD> assaultRifleAmmoOffsets{ 0x140 };
+    std::vector<DWORD> pistleAmmoOffsets{ 0x12C };
+    std::vector<DWORD> healthOffsets{ 0xEC };
 
     // adds offsets to base addresss
-    DWORD ammoPointerAddress = GetPointerAddress(processHandle, baseAddress, ammoAddress, ammoOffsets);
+    DWORD assaultRifleAmmoPointerAddress = GetPointerAddress(processHandle, baseAddress, assaultRifleAmmoAddress, assaultRifleAmmoOffsets);
+    DWORD pistleAmmoPointerAddress = GetPointerAddress(processHandle, baseAddress, pistleAmmoAddress, pistleAmmoOffsets);
+    DWORD healthPointerAddress = GetPointerAddress(processHandle, baseAddress, healthAddress, healthOffsets);
 
     while (true)
     {
-        int ammo = 20;
+        int assaultRifleAmmo = 20;
+        int pistleAmmo = 10;
+        int health = 100;
+
         // writes data to an area of memory in a specified process
-        WriteProcessMemory(processHandle, (LPVOID*)(ammoPointerAddress), &ammo, 4, 0);
+        WriteProcessMemory(processHandle, (LPVOID*)(assaultRifleAmmoPointerAddress), &assaultRifleAmmo, 4, 0);
+        WriteProcessMemory(processHandle, (LPVOID*)(pistleAmmoPointerAddress), &pistleAmmo, 4, 0);
+        WriteProcessMemory(processHandle, (LPVOID*)(healthPointerAddress), &health, 4, 0);
     }
     return EXIT_SUCCESS;
 }

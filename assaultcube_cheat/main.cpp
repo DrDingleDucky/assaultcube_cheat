@@ -87,6 +87,7 @@ int main()
     DWORD carbineAmmoAddress = 0x0017E0A8;
     DWORD pistleAmmoAddress = 0x0017E0A8;
     DWORD healthAddress = 0x0017E0A8;
+    DWORD armorAddress = 0x0017E0A8;
 
     // pointer offsets
     std::vector<DWORD> assaultRifleAmmoOffsets{ 0x140 };
@@ -96,6 +97,7 @@ int main()
     std::vector<DWORD> carbineAmmoOffsets{ 0x130 };
     std::vector<DWORD> pistleAmmoOffsets{ 0x12C };
     std::vector<DWORD> healthOffsets{ 0xEC };
+    std::vector<DWORD> armorOffsets{ 0xF0 };
 
     // adds offsets to base addresss
     DWORD assaultRifleAmmoPointerAddress = GetPointerAddress(processHandle, baseAddress, assaultRifleAmmoAddress, assaultRifleAmmoOffsets);
@@ -105,17 +107,19 @@ int main()
     DWORD carbineAmmoPointerAddress = GetPointerAddress(processHandle, baseAddress, carbineAmmoAddress, carbineAmmoOffsets);
     DWORD pistleAmmoPointerAddress = GetPointerAddress(processHandle, baseAddress, pistleAmmoAddress, pistleAmmoOffsets);
     DWORD healthPointerAddress = GetPointerAddress(processHandle, baseAddress, healthAddress, healthOffsets);
+    DWORD armorPointerAddress = GetPointerAddress(processHandle, baseAddress, armorAddress, armorOffsets);
+
+    int assaultRifleAmmo = 20;
+    int submachineAmmo = 30;
+    int sniperAmmo = 5;
+    int shotgunAmmo = 7;
+    int carbineAmmo = 10;
+    int pistleAmmo = 10;
+    int health = 100;
+    int armor = 100;
 
     while (true)
     {
-        int assaultRifleAmmo = 20;
-        int submachineAmmo = 30;
-        int sniperAmmo = 5;
-        int shotgunAmmo = 7;
-        int carbineAmmo = 10;
-        int pistleAmmo = 10;
-        int health = 100;
-
         // writes data to an area of memory in a specified process
         WriteProcessMemory(processHandle, (LPVOID*)(assaultRifleAmmoPointerAddress), &assaultRifleAmmo, 4, 0);
         WriteProcessMemory(processHandle, (LPVOID*)(submachineAmmoPointerAddress), &submachineAmmo, 4, 0);
@@ -123,6 +127,7 @@ int main()
         WriteProcessMemory(processHandle, (LPVOID*)(shotgunAmmoPointerAddress), &shotgunAmmo, 4, 0);
         WriteProcessMemory(processHandle, (LPVOID*)(carbineAmmoPointerAddress), &carbineAmmo, 4, 0);
         WriteProcessMemory(processHandle, (LPVOID*)(pistleAmmoPointerAddress), &pistleAmmo, 4, 0);
+        WriteProcessMemory(processHandle, (LPVOID*)(armorPointerAddress), &armor, 4, 0);
         WriteProcessMemory(processHandle, (LPVOID*)(healthPointerAddress), &health, 4, 0);
     }
     return EXIT_SUCCESS;

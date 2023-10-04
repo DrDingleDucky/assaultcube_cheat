@@ -129,6 +129,9 @@
   <ItemGroup>
     <ClCompile Include="main.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\..\..\Documents\cheat_tables\AssaultCube.CT" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

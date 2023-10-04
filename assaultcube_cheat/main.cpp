@@ -82,18 +82,27 @@ int main()
     // base address
     DWORD assaultRifleAmmoAddress = 0x0017E0A8;
     DWORD submachineAmmoAddress = 0x0017E0A8;
+    DWORD sniperAmmoAddress = 0x0017E0A8;
+    DWORD shotgunAmmoAddress = 0x0017E0A8;
+    DWORD carbineAmmoAddress = 0x0017E0A8;
     DWORD pistleAmmoAddress = 0x0017E0A8;
     DWORD healthAddress = 0x0017E0A8;
 
     // pointer offsets
     std::vector<DWORD> assaultRifleAmmoOffsets{ 0x140 };
     std::vector<DWORD> submachineAmmoOffsets{ 0x138 };
+    std::vector<DWORD> sniperAmmoOffsets{ 0x13C };
+    std::vector<DWORD> shotgunAmmoOffsets{ 0x134 };
+    std::vector<DWORD> carbineAmmoOffsets{ 0x130 };
     std::vector<DWORD> pistleAmmoOffsets{ 0x12C };
     std::vector<DWORD> healthOffsets{ 0xEC };
 
     // adds offsets to base addresss
     DWORD assaultRifleAmmoPointerAddress = GetPointerAddress(processHandle, baseAddress, assaultRifleAmmoAddress, assaultRifleAmmoOffsets);
     DWORD submachineAmmoPointerAddress = GetPointerAddress(processHandle, baseAddress, submachineAmmoAddress, submachineAmmoOffsets);
+    DWORD sniperAmmoPointerAddress = GetPointerAddress(processHandle, baseAddress, sniperAmmoAddress, sniperAmmoOffsets);
+    DWORD shotgunAmmoPointerAddress = GetPointerAddress(processHandle, baseAddress, shotgunAmmoAddress, shotgunAmmoOffsets);
+    DWORD carbineAmmoPointerAddress = GetPointerAddress(processHandle, baseAddress, carbineAmmoAddress, carbineAmmoOffsets);
     DWORD pistleAmmoPointerAddress = GetPointerAddress(processHandle, baseAddress, pistleAmmoAddress, pistleAmmoOffsets);
     DWORD healthPointerAddress = GetPointerAddress(processHandle, baseAddress, healthAddress, healthOffsets);
 
@@ -101,12 +110,18 @@ int main()
     {
         int assaultRifleAmmo = 20;
         int submachineAmmo = 30;
+        int sniperAmmo = 5;
+        int shotgunAmmo = 7;
+        int carbineAmmo = 10;
         int pistleAmmo = 10;
         int health = 100;
 
         // writes data to an area of memory in a specified process
         WriteProcessMemory(processHandle, (LPVOID*)(assaultRifleAmmoPointerAddress), &assaultRifleAmmo, 4, 0);
         WriteProcessMemory(processHandle, (LPVOID*)(submachineAmmoPointerAddress), &submachineAmmo, 4, 0);
+        WriteProcessMemory(processHandle, (LPVOID*)(sniperAmmoPointerAddress), &sniperAmmo, 4, 0);
+        WriteProcessMemory(processHandle, (LPVOID*)(shotgunAmmoPointerAddress), &shotgunAmmo, 4, 0);
+        WriteProcessMemory(processHandle, (LPVOID*)(carbineAmmoPointerAddress), &carbineAmmo, 4, 0);
         WriteProcessMemory(processHandle, (LPVOID*)(pistleAmmoPointerAddress), &pistleAmmo, 4, 0);
         WriteProcessMemory(processHandle, (LPVOID*)(healthPointerAddress), &health, 4, 0);
     }

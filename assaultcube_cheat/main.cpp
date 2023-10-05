@@ -89,6 +89,8 @@ int main()
     DWORD healthAddress = 0x0017E0A8;
     DWORD armorAddress = 0x0017E0A8;
 
+    DWORD pitchAddress = 0x00183828;
+
     // pointer offsets
     std::vector<DWORD> assaultRifleAmmoOffsets{ 0x140 };
     std::vector<DWORD> submachineAmmoOffsets{ 0x138 };
@@ -98,6 +100,8 @@ int main()
     std::vector<DWORD> pistleAmmoOffsets{ 0x12C };
     std::vector<DWORD> healthOffsets{ 0xEC };
     std::vector<DWORD> armorOffsets{ 0xF0 };
+
+    std::vector<DWORD> pitchOffsets{ 0x8, 0x60, 0x30, 0x6D8 };
 
     // adds offsets to base addresss
     DWORD assaultRifleAmmoPointerAddress = GetPointerAddress(processHandle, baseAddress, assaultRifleAmmoAddress, assaultRifleAmmoOffsets);
@@ -109,6 +113,8 @@ int main()
     DWORD healthPointerAddress = GetPointerAddress(processHandle, baseAddress, healthAddress, healthOffsets);
     DWORD armorPointerAddress = GetPointerAddress(processHandle, baseAddress, armorAddress, armorOffsets);
 
+    DWORD pitchPointerAddress = GetPointerAddress(processHandle, baseAddress, pitchAddress, pitchOffsets);
+
     int assaultRifleAmmo = 20;
     int submachineAmmo = 30;
     int sniperAmmo = 5;
@@ -118,8 +124,14 @@ int main()
     int health = 100;
     int armor = 100;
 
+    float pitch;
+
     while (true)
     {
+        // reads data from a specified process
+        ReadProcessMemory(processHandle, (LPVOID*)(pitchPointerAddress), &pitch, sizeof(float), 0);
+        std::cout << pitch << "\n";
+
         // writes data to an area of memory in a specified process
         WriteProcessMemory(processHandle, (LPVOID*)(assaultRifleAmmoPointerAddress), &assaultRifleAmmo, 4, 0);
         WriteProcessMemory(processHandle, (LPVOID*)(submachineAmmoPointerAddress), &submachineAmmo, 4, 0);

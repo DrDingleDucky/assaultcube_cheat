@@ -1,12 +1,11 @@
-#include <iostream>
 #include <Windows.h>
-#include <stdlib.h>
-#include <vector>
 #include <TlHelp32.h>
+#include <iostream>
+#include <stdlib.h>
 #include <tchar.h>
 #include <vector>
 
-DWORD GetModuleBaseAddress(const wchar_t* lpszModuleName, DWORD processID)
+DWORD GetModuleBaseAddress(const wchar_t *lpszModuleName, DWORD processID)
 {
     DWORD moduleBaseAddress = 0;
     // takes a snapshot of all modules and more with in the specified processes
@@ -17,7 +16,7 @@ DWORD GetModuleBaseAddress(const wchar_t* lpszModuleName, DWORD processID)
         return EXIT_FAILURE;
     }
 
-    MODULEENTRY32 moduleEntry32 = { 0 };
+    MODULEENTRY32 moduleEntry32 = {0};
     // if you do not initialize dwSize, Module32First fails
     moduleEntry32.dwSize = sizeof(MODULEENTRY32);
     // retrieves and stores information about the first module associated with the process
@@ -42,11 +41,11 @@ DWORD GetPointerAddress(HANDLE processHandle, DWORD baseAddress, DWORD address, 
 {
     DWORD pointerAddress = NULL;
     // copies the data in the specified address range from the address space of the specified process
-    ReadProcessMemory(processHandle, (LPVOID*)(baseAddress + address), &pointerAddress, sizeof(pointerAddress), 0);
+    ReadProcessMemory(processHandle, (LPVOID *)(baseAddress + address), &pointerAddress, sizeof(pointerAddress), 0);
     // we don't want to change the last offset value so we do -1
     for (int i = 0; i < offsets.size() - 1; i++)
     {
-        ReadProcessMemory(processHandle, (LPVOID*)(pointerAddress + offsets.at(i)), &pointerAddress, sizeof(pointerAddress), 0);
+        ReadProcessMemory(processHandle, (LPVOID *)(pointerAddress + offsets.at(i)), &pointerAddress, sizeof(pointerAddress), 0);
     }
 
     return pointerAddress += offsets.at(offsets.size() - 1);
@@ -94,17 +93,17 @@ int main()
     DWORD armorAddress = 0x0017E0A8;
 
     // pointer offsets
-    std::vector<DWORD> yawOffsets{ 0x34 };
-    std::vector<DWORD> pitchOffsets{ 0x8, 0x60, 0x30, 0x6D8 };
+    std::vector<DWORD> yawOffsets{0x34};
+    std::vector<DWORD> pitchOffsets{0x8, 0x60, 0x30, 0x6D8};
 
-    std::vector<DWORD> assaultRifleAmmoOffsets{ 0x140 };
-    std::vector<DWORD> submachineAmmoOffsets{ 0x138 };
-    std::vector<DWORD> sniperAmmoOffsets{ 0x13C };
-    std::vector<DWORD> shotgunAmmoOffsets{ 0x134 };
-    std::vector<DWORD> carbineAmmoOffsets{ 0x130 };
-    std::vector<DWORD> pistleAmmoOffsets{ 0x12C };
-    std::vector<DWORD> healthOffsets{ 0xEC };
-    std::vector<DWORD> armorOffsets{ 0xF0 };
+    std::vector<DWORD> assaultRifleAmmoOffsets{0x140};
+    std::vector<DWORD> submachineAmmoOffsets{0x138};
+    std::vector<DWORD> sniperAmmoOffsets{0x13C};
+    std::vector<DWORD> shotgunAmmoOffsets{0x134};
+    std::vector<DWORD> carbineAmmoOffsets{0x130};
+    std::vector<DWORD> pistleAmmoOffsets{0x12C};
+    std::vector<DWORD> healthOffsets{0xEC};
+    std::vector<DWORD> armorOffsets{0xF0};
 
     // adds offsets to base addresss
     DWORD YawPointerAddress = GetPointerAddress(processHandle, baseAddress, yawAddress, yawOffsets);
@@ -134,19 +133,19 @@ int main()
     while (true)
     {
         // reads data from a specified process
-        ReadProcessMemory(processHandle, (LPVOID*)(YawPointerAddress), &yaw, sizeof(float), 0);
-        ReadProcessMemory(processHandle, (LPVOID*)(pitchPointerAddress), &pitch, sizeof(float), 0);
+        ReadProcessMemory(processHandle, (LPVOID *)(YawPointerAddress), &yaw, sizeof(float), 0);
+        ReadProcessMemory(processHandle, (LPVOID *)(pitchPointerAddress), &pitch, sizeof(float), 0);
         std::cout << "yaw: " << yaw << " pitch:" << pitch << "\n";
 
         // writes data to an area of memory in a specified process
-        WriteProcessMemory(processHandle, (LPVOID*)(assaultRifleAmmoPointerAddress), &assaultRifleAmmo, 4, 0);
-        WriteProcessMemory(processHandle, (LPVOID*)(submachineAmmoPointerAddress), &submachineAmmo, 4, 0);
-        WriteProcessMemory(processHandle, (LPVOID*)(sniperAmmoPointerAddress), &sniperAmmo, 4, 0);
-        WriteProcessMemory(processHandle, (LPVOID*)(shotgunAmmoPointerAddress), &shotgunAmmo, 4, 0);
-        WriteProcessMemory(processHandle, (LPVOID*)(carbineAmmoPointerAddress), &carbineAmmo, 4, 0);
-        WriteProcessMemory(processHandle, (LPVOID*)(pistleAmmoPointerAddress), &pistleAmmo, 4, 0);
-        WriteProcessMemory(processHandle, (LPVOID*)(armorPointerAddress), &armor, 4, 0);
-        WriteProcessMemory(processHandle, (LPVOID*)(healthPointerAddress), &health, 4, 0);
+        WriteProcessMemory(processHandle, (LPVOID *)(assaultRifleAmmoPointerAddress), &assaultRifleAmmo, 4, 0);
+        WriteProcessMemory(processHandle, (LPVOID *)(submachineAmmoPointerAddress), &submachineAmmo, 4, 0);
+        WriteProcessMemory(processHandle, (LPVOID *)(sniperAmmoPointerAddress), &sniperAmmo, 4, 0);
+        WriteProcessMemory(processHandle, (LPVOID *)(shotgunAmmoPointerAddress), &shotgunAmmo, 4, 0);
+        WriteProcessMemory(processHandle, (LPVOID *)(carbineAmmoPointerAddress), &carbineAmmo, 4, 0);
+        WriteProcessMemory(processHandle, (LPVOID *)(pistleAmmoPointerAddress), &pistleAmmo, 4, 0);
+        WriteProcessMemory(processHandle, (LPVOID *)(armorPointerAddress), &armor, 4, 0);
+        WriteProcessMemory(processHandle, (LPVOID *)(healthPointerAddress), &health, 4, 0);
     }
     return EXIT_SUCCESS;
 }

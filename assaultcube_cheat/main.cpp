@@ -4,9 +4,10 @@
 #include <vector>
 #include <TlHelp32.h>
 #include <tchar.h>
+#include <vector>
 
-
-DWORD GetModuleBaseAddress(const wchar_t* lpszModuleName, DWORD processID) {
+DWORD GetModuleBaseAddress(const wchar_t* lpszModuleName, DWORD processID)
+{
     DWORD moduleBaseAddress = 0;
     // takes a snapshot of all modules and more with in the specified processes
     HANDLE snapshot = CreateToolhelp32Snapshot(TH32CS_SNAPMODULE, processID);
@@ -22,7 +23,8 @@ DWORD GetModuleBaseAddress(const wchar_t* lpszModuleName, DWORD processID) {
     // retrieves and stores information about the first module associated with the process
     if (Module32First(snapshot, &moduleEntry32))
     {
-        do {
+        do
+        {
             // if found module matches module we are looking for, get base address
             if (_tcscmp(moduleEntry32.szModule, lpszModuleName) == 0)
             {
@@ -68,7 +70,6 @@ int main()
         std::cout << "processID return 0\n";
     }
 
-
     // opens an existing local process object
     HANDLE processHandle = OpenProcess(PROCESS_ALL_ACCESS, FALSE, processID);
     if (processHandle == NULL)
@@ -80,6 +81,9 @@ int main()
     uintptr_t baseAddress = GetModuleBaseAddress(L"ac_client.exe", processID);
 
     // base address
+    DWORD yawAddress = 0x0017E0A8;
+    DWORD pitchAddress = 0x00183828;
+
     DWORD assaultRifleAmmoAddress = 0x0017E0A8;
     DWORD submachineAmmoAddress = 0x0017E0A8;
     DWORD sniperAmmoAddress = 0x0017E0A8;
@@ -89,10 +93,10 @@ int main()
     DWORD healthAddress = 0x0017E0A8;
     DWORD armorAddress = 0x0017E0A8;
 
-    DWORD yawAddress = 0x0017E0A8;
-    DWORD pitchAddress = 0x00183828;
-
     // pointer offsets
+    std::vector<DWORD> yawOffsets{ 0x34 };
+    std::vector<DWORD> pitchOffsets{ 0x8, 0x60, 0x30, 0x6D8 };
+
     std::vector<DWORD> assaultRifleAmmoOffsets{ 0x140 };
     std::vector<DWORD> submachineAmmoOffsets{ 0x138 };
     std::vector<DWORD> sniperAmmoOffsets{ 0x13C };
@@ -102,10 +106,10 @@ int main()
     std::vector<DWORD> healthOffsets{ 0xEC };
     std::vector<DWORD> armorOffsets{ 0xF0 };
 
-    std::vector<DWORD> yawOffsets{ 0x34 };
-    std::vector<DWORD> pitchOffsets{ 0x8, 0x60, 0x30, 0x6D8 };
-
     // adds offsets to base addresss
+    DWORD YawPointerAddress = GetPointerAddress(processHandle, baseAddress, yawAddress, yawOffsets);
+    DWORD pitchPointerAddress = GetPointerAddress(processHandle, baseAddress, pitchAddress, pitchOffsets);
+
     DWORD assaultRifleAmmoPointerAddress = GetPointerAddress(processHandle, baseAddress, assaultRifleAmmoAddress, assaultRifleAmmoOffsets);
     DWORD submachineAmmoPointerAddress = GetPointerAddress(processHandle, baseAddress, submachineAmmoAddress, submachineAmmoOffsets);
     DWORD sniperAmmoPointerAddress = GetPointerAddress(processHandle, baseAddress, sniperAmmoAddress, sniperAmmoOffsets);
@@ -115,8 +119,8 @@ int main()
     DWORD healthPointerAddress = GetPointerAddress(processHandle, baseAddress, healthAddress, healthOffsets);
     DWORD armorPointerAddress = GetPointerAddress(processHandle, baseAddress, armorAddress, armorOffsets);
 
-    DWORD YawPointerAddress = GetPointerAddress(processHandle, baseAddress, yawAddress, yawOffsets);
-    DWORD pitchPointerAddress = GetPointerAddress(processHandle, baseAddress, pitchAddress, pitchOffsets);
+    float yaw;
+    float pitch;
 
     int assaultRifleAmmo = 20;
     int submachineAmmo = 30;
@@ -126,9 +130,6 @@ int main()
     int pistleAmmo = 10;
     int health = 100;
     int armor = 100;
-
-    float yaw;
-    float pitch;
 
     while (true)
     {

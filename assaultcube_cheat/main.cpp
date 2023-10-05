@@ -89,6 +89,7 @@ int main()
     DWORD healthAddress = 0x0017E0A8;
     DWORD armorAddress = 0x0017E0A8;
 
+    DWORD yawAddress = 0x0017E0A8;
     DWORD pitchAddress = 0x00183828;
 
     // pointer offsets
@@ -101,6 +102,7 @@ int main()
     std::vector<DWORD> healthOffsets{ 0xEC };
     std::vector<DWORD> armorOffsets{ 0xF0 };
 
+    std::vector<DWORD> yawOffsets{ 0x34 };
     std::vector<DWORD> pitchOffsets{ 0x8, 0x60, 0x30, 0x6D8 };
 
     // adds offsets to base addresss
@@ -113,6 +115,7 @@ int main()
     DWORD healthPointerAddress = GetPointerAddress(processHandle, baseAddress, healthAddress, healthOffsets);
     DWORD armorPointerAddress = GetPointerAddress(processHandle, baseAddress, armorAddress, armorOffsets);
 
+    DWORD YawPointerAddress = GetPointerAddress(processHandle, baseAddress, yawAddress, yawOffsets);
     DWORD pitchPointerAddress = GetPointerAddress(processHandle, baseAddress, pitchAddress, pitchOffsets);
 
     int assaultRifleAmmo = 20;
@@ -124,13 +127,15 @@ int main()
     int health = 100;
     int armor = 100;
 
+    float yaw;
     float pitch;
 
     while (true)
     {
         // reads data from a specified process
+        ReadProcessMemory(processHandle, (LPVOID*)(YawPointerAddress), &yaw, sizeof(float), 0);
         ReadProcessMemory(processHandle, (LPVOID*)(pitchPointerAddress), &pitch, sizeof(float), 0);
-        std::cout << pitch << "\n";
+        std::cout << "yaw: " << yaw << " pitch:" << pitch << "\n";
 
         // writes data to an area of memory in a specified process
         WriteProcessMemory(processHandle, (LPVOID*)(assaultRifleAmmoPointerAddress), &assaultRifleAmmo, 4, 0);

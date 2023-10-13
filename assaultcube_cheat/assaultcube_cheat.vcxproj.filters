@@ -20,6 +20,9 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\..\..\Documents\cheat_tables\AssaultCube.CT" />
+    <None Include="..\.gitattributes" />
+    <None Include="..\.gitignore" />
+    <None Include="..\AssaultCube.CT" />
+    <None Include="..\README.md" />
   </ItemGroup>
 </Project>

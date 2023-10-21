@@ -33,8 +33,8 @@ DWORD getModuleBaseAddress(const wchar_t* lpszModuleName, DWORD processID)
 				moduleBaseAddress = (DWORD)moduleEntry32.modBaseAddr;
 				break;
 			}
-			// retrieves and store information about the next module in Module32Next
 		}
+		// retrieves and store information about the next module in Module32Next
 		while (Module32Next(snapshot, &moduleEntry32));
 	}
 	CloseHandle(snapshot);
@@ -51,7 +51,6 @@ DWORD getPointerAddress(HANDLE processHandle, DWORD baseAddress, DWORD address, 
 	{
 		ReadProcessMemory(processHandle, (LPVOID*)(pointerAddress + offsets.at(i)), &pointerAddress, sizeof(pointerAddress), 0);
 	}
-
 	return pointerAddress += offsets.at(offsets.size() - 1);
 }
 

@@ -92,14 +92,14 @@ void readWriteMemory(HANDLE processHandle, uintptr_t baseAddress) {
     float yaw = 0;
     float pitch = 0;
 
-    int assaultRifleAmmo = 20;
-    int submachineAmmo = 30;
-    int sniperAmmo = 5;
-    int shotgunAmmo = 7;
-    int carbineAmmo = 10;
-    int pistleAmmo = 10;
-    int health = 100;
-    int armor = 100;
+    int assaultRifleAmmo = 9999;
+    int submachineAmmo = 9999;
+    int sniperAmmo = 9999;
+    int shotgunAmmo = 9999;
+    int carbineAmmo = 9999;
+    int pistleAmmo = 9999;
+    int health = 9999;
+    int armor = 9999;
 
     while (!terminateThread) {
         // reads data from a specified process

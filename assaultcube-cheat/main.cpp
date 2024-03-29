@@ -59,7 +59,7 @@ void readWriteMemory(HANDLE processHandle, uintptr_t baseAddress) {
     DWORD sniperAmmoAddress = 0x0017E0A8;
     DWORD shotgunAmmoAddress = 0x0017E0A8;
     DWORD carbineAmmoAddress = 0x0017E0A8;
-    DWORD pistleAmmoAddress = 0x0017E0A8;
+    DWORD pistolAmmoAddress = 0x0017E0A8;
     DWORD healthAddress = 0x0017E0A8;
     DWORD armorAddress = 0x0017E0A8;
 
@@ -72,11 +72,11 @@ void readWriteMemory(HANDLE processHandle, uintptr_t baseAddress) {
     std::vector<DWORD> sniperAmmoOffsets{0x13C};
     std::vector<DWORD> shotgunAmmoOffsets{0x134};
     std::vector<DWORD> carbineAmmoOffsets{0x130};
-    std::vector<DWORD> pistleAmmoOffsets{0x12C};
+    std::vector<DWORD> pistolAmmoOffsets{0x12C};
     std::vector<DWORD> healthOffsets{0xEC};
     std::vector<DWORD> armorOffsets{0xF0};
 
-    // adds offsets to base addresss
+    // adds offsets to base address
     DWORD YawPointerAddress = getPointerAddress(processHandle, baseAddress, yawAddress, yawOffsets);
     DWORD pitchPointerAddress = getPointerAddress(processHandle, baseAddress, pitchAddress, pitchOffsets);
 
@@ -85,7 +85,7 @@ void readWriteMemory(HANDLE processHandle, uintptr_t baseAddress) {
     DWORD sniperAmmoPointerAddress = getPointerAddress(processHandle, baseAddress, sniperAmmoAddress, sniperAmmoOffsets);
     DWORD shotgunAmmoPointerAddress = getPointerAddress(processHandle, baseAddress, shotgunAmmoAddress, shotgunAmmoOffsets);
     DWORD carbineAmmoPointerAddress = getPointerAddress(processHandle, baseAddress, carbineAmmoAddress, carbineAmmoOffsets);
-    DWORD pistleAmmoPointerAddress = getPointerAddress(processHandle, baseAddress, pistleAmmoAddress, pistleAmmoOffsets);
+    DWORD pistolAmmoPointerAddress = getPointerAddress(processHandle, baseAddress, pistolAmmoAddress, pistolAmmoOffsets);
     DWORD healthPointerAddress = getPointerAddress(processHandle, baseAddress, healthAddress, healthOffsets);
     DWORD armorPointerAddress = getPointerAddress(processHandle, baseAddress, armorAddress, armorOffsets);
 
@@ -97,7 +97,7 @@ void readWriteMemory(HANDLE processHandle, uintptr_t baseAddress) {
     int sniperAmmo = 9999;
     int shotgunAmmo = 9999;
     int carbineAmmo = 9999;
-    int pistleAmmo = 9999;
+    int pistolAmmo = 9999;
     int health = 9999;
     int armor = 9999;
 
@@ -113,7 +113,7 @@ void readWriteMemory(HANDLE processHandle, uintptr_t baseAddress) {
         WriteProcessMemory(processHandle, (LPVOID *)(sniperAmmoPointerAddress), &sniperAmmo, 4, 0);
         WriteProcessMemory(processHandle, (LPVOID *)(shotgunAmmoPointerAddress), &shotgunAmmo, 4, 0);
         WriteProcessMemory(processHandle, (LPVOID *)(carbineAmmoPointerAddress), &carbineAmmo, 4, 0);
-        WriteProcessMemory(processHandle, (LPVOID *)(pistleAmmoPointerAddress), &pistleAmmo, 4, 0);
+        WriteProcessMemory(processHandle, (LPVOID *)(pistolAmmoPointerAddress), &pistolAmmo, 4, 0);
         WriteProcessMemory(processHandle, (LPVOID *)(armorPointerAddress), &armor, 4, 0);
         WriteProcessMemory(processHandle, (LPVOID *)(healthPointerAddress), &health, 4, 0);
     }
@@ -145,7 +145,7 @@ int main() {
 
     while (!terminateThread) {
         std::thread thread(readWriteMemory, processHandle, baseAddress);
-        
+
         std::cout << "press enter to exit...";
         std::cin.ignore();
 

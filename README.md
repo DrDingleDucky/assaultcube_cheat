@@ -2,4 +2,4 @@
 
 Game hacking stuff.
 
-![game.gif](README.assets/game.gif)
+![assault-cube.gif](README.assets/assault-cube.gif)

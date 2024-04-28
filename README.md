@@ -2,4 +2,4 @@
 
 Game hacking stuff.
 
-![game.png](README.assets/game.png)
+![game.gif](README.assets/game.gif)
